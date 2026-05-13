@@ -37,8 +37,23 @@ Additionally, there the following images, similar to the above:
 - `ghcr.io/ggml-org/llama.cpp:full-s390x`: Identical to `full`, an alias for the `s390x` platform. (platforms: `linux/s390x`)
 - `ghcr.io/ggml-org/llama.cpp:light-s390x`: Identical to `light`, an alias for the `s390x` platform. (platforms: `linux/s390x`)
 - `ghcr.io/ggml-org/llama.cpp:server-s390x`: Identical to `server`, an alias for the `s390x` platform. (platforms: `linux/s390x`)
+- [.devops/rknpu2.Dockerfile](../.devops/rknpu2.Dockerfile): Same as `full`, `light`, and `server` but compiled with Rockchip RKNPU2 support. (platforms: `linux/arm64` only; local build, not published to ghcr.io)
 
 The GPU enabled images are not currently tested by CI beyond being built. They are not built with any variation from the ones in the Dockerfiles defined in [.devops/](../.devops/) and the GitHub Action defined in [.github/workflows/docker.yml](../.github/workflows/docker.yml). If you need different settings (for example, a different CUDA, ROCm or MUSA library, you'll need to build the images locally for now).
+
+## Docker with Rockchip RKNPU2
+
+On an arm64 host, plain `docker build` works. If `TARGETARCH` is empty (legacy builder), the Dockerfile falls back to `uname -m` (`aarch64` / `arm64`).
+
+Build examples:
+
+```bash
+docker build --platform linux/arm64 -t local/llama.cpp:server-rknpu2 --target server -f .devops/rknpu2.Dockerfile .
+docker build --platform linux/arm64 -t local/llama.cpp:light-rknpu2  --target light  -f .devops/rknpu2.Dockerfile .
+docker build --platform linux/arm64 -t local/llama.cpp:full-rknpu2   --target full   -f .devops/rknpu2.Dockerfile .
+```
+
+Running on-device usually needs enough open files and access to the NPU; see [ggml/src/ggml-rknpu2/README.md](../ggml/src/ggml-rknpu2/README.md) (e.g. `ulimit -n 65536`). With Docker you may use `--ulimit nofile=65536:65536` and device or `--privileged` access as required by your kernel and driver.
 
 ## Usage
 

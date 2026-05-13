@@ -1,20 +1,7 @@
-*.o
-*.a
-.cache/
-# Do not ignore .git directory, otherwise the reported build number will always be 0
-.github/
-.gitignore
-.vs/
-.vscode/
-.DS_Store
+# Keep context usable for full-tree Dockerfiles (.devops/cpu.Dockerfile, rknpu2.Dockerfile).
+# Do not ignore build/: [.devops/rknn.Dockerfile](.devops/rknn.Dockerfile) copies host-built binaries from build/.
+# In-container builds remove a stale build/ tree before cmake (see rknpu2.Dockerfile).
 
-build*/
-
-models/*
-
-/llama-cli
-/llama-quantize
-
-arm_neon.h
-compile_commands.json
-Dockerfile
+.git/
+**/__pycache__/
+**/*.pyc
