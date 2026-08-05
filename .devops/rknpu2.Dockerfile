@@ -59,6 +59,10 @@ RUN apt-get update \
 
 COPY --from=build /app/lib/ /app
 
+ENV LD_LIBRARY_PATH=/app
+ENV GGML_BACKEND_PATH=/app/libggml-rknpu2.so
+ENV RKNPU_DEVICE=RK3588
+
 FROM base AS full
 
 COPY --from=build /app/full /app

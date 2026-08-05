@@ -39,6 +39,8 @@ ulimit -n 65536
 ./build/bin/llama-cli -m ./gemma-3-1b-it-Q8_0.gguf
 ```
 
+In Docker, add `--simple-io` for Cyrillic/UTF-8 input (see [docs/docker.md](../../../docs/docker.md)).
+
 ## Benchmarks
 
 The following benchmarks were conducted on an RK3588, comparing the performance, accuracy, and power consumption of the NPU backend against the standard CPU (NEON) backend.

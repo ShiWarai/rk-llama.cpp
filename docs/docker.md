@@ -55,6 +55,21 @@ docker build --platform linux/arm64 -t local/llama.cpp:full-rknpu2   --target fu
 
 Running on-device usually needs enough open files and access to the NPU; see [ggml/src/ggml-rknpu2/README.md](../ggml/src/ggml-rknpu2/README.md) (e.g. `ulimit -n 65536`). With Docker you may use `--ulimit nofile=65536:65536` and device or `--privileged` access as required by your kernel and driver.
 
+Interactive chat in Docker (use `--simple-io` for Cyrillic/UTF-8 input in the container TTY):
+
+```bash
+docker run -it --rm \
+  --privileged \
+  --ulimit nofile=65536:65536 \
+  -v /path/to/models:/models \
+  -e GGML_BACKEND_PATH=/app/libggml-rknpu2.so \
+  ghcr.io/shiwarai/rk-llama.cpp:light-rknpu2 \
+  --simple-io \
+  -m /models/model.gguf
+```
+
+Without `--simple-io`, non-ASCII input (e.g. Russian) may fail in the default advanced console mode inside Docker.
+
 ## Usage
 
 The easiest way to download the models, convert them to ggml and optimize them is with the --all-in-one command which includes the full docker image.
